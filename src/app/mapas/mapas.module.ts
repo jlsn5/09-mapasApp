@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MapasRoutingModule } from './mapas-routing.module';
 
-import { MiniMapaComponent } from './pages/mini-mapa/mini-mapa.component';
+import { MiniMapaComponent } from './components/mini-mapa/mini-mapa.component';
 import { FullScreenComponent } from './pages/full-screen/full-screen.component';
 import { MarcadoresComponent } from './pages/marcadores/marcadores.component';
 import { ZoomRangeComponent } from './pages/zoom-range/zoom-range.component';
