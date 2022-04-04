@@ -54,6 +54,8 @@ export class MarcadoresComponent implements AfterViewInit {
       zoom: this.zoomLevel // starting zoom
     });
 
+    this.leerLocalStorage();
+
     // const markerHtml: HTMLElement = document.createElement('div');
     // markerHtml.innerHTML = 'Hola Mundo';
 
@@ -81,6 +83,11 @@ export class MarcadoresComponent implements AfterViewInit {
       });
 
       this.guadarMarcadoresLocalStorage()
+
+      nuevoMarcador.on('dragend', () => {
+        this.guadarMarcadoresLocalStorage();
+      })
+
   }
 
   irMarcador( marcador:mapboxgl.Marker ){
@@ -110,6 +117,40 @@ export class MarcadoresComponent implements AfterViewInit {
   }
 
   leerLocalStorage(){
+    if( !localStorage.getItem( 'marcadores' ) ){
+      return;
+    }
+
+    const lngLatArr: MarcadorColor[] = JSON.parse(localStorage.getItem('marcadores'));
+
+    lngLatArr.forEach( m => {
+      const newMarker = new mapboxgl.Marker({
+        color: m.color,
+        draggable: true
+      })
+      .setLngLat( m.centro )
+      .addTo( this.mapa )
+
+      this.marcadores.push({
+        marker: newMarker,
+        color: m.color
+      })
+
+      newMarker.on('dragend', () => {
+        this.guadarMarcadoresLocalStorage();
+      })
+
+    })
+
+  }
+
+  borrarMarcador( i: number ){
+
+    this.marcadores[i].marker?.remove();
+
+    this.marcadores.splice(i, 1);
+
+    this.guadarMarcadoresLocalStorage();
 
   }
 
